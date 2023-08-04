@@ -4,7 +4,6 @@ import com.enigma.moviemania.LoginRequest;
 import com.enigma.moviemania.entity.Admin;
 import com.enigma.moviemania.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +17,6 @@ import java.util.Collections;
 public class AuthController {
 
     private final AdminRepository adminRepository;
-    private final PasswordEncoder passwordEncoder;
-
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("admin", new Admin());
@@ -29,7 +26,7 @@ public class AuthController {
     @PostMapping("/register")
     public String processRegistrationForm(@RequestBody Admin admin) {
         admin.setRoles(Collections.singleton("ADMIN"));
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        admin.setPassword((admin.getPassword()));
         adminRepository.save(admin);
         return "redirect:/login?registered";
     }
